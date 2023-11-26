@@ -1,5 +1,6 @@
 import {createApp, h} from 'vue'
 import L3tCard from "./L3tCard.vue";
+import shadow from 'vue-shadow-dom'
 
 
 const app = createApp({
@@ -7,6 +8,7 @@ const app = createApp({
         return (h(L3tCard))
     }
 })
+app.use(shadow)
 
 const root = document.createElement("L3T")
 document.body.appendChild(root)

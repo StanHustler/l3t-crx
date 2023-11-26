@@ -21,7 +21,9 @@
     "fmt": "prettier --write '**/*.{vue,ts,json,css,scss,md}'"
   },
   "dependencies": {
-    "vue": "^3.3.4"
+    "vite-svg-loader": "^5.1.0",
+    "vue": "^3.3.4",
+    "vue-shadow-dom": "^4.2.0"
   },
   "devDependencies": {
     "@crxjs/vite-plugin": "^2.0.0-beta.19",
