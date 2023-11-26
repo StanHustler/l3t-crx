@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {getRangeAtPoint, init} from "./highlight";
 import {ShadowRoot, ShadowStyle} from "vue-shadow-dom";
-import {onMounted, ref} from "vue";
+import {onMounted, ref, watch} from "vue";
 
 import Heart from "../assets/heart.svg";
 import Hearted from "../assets/hearted.svg";
@@ -9,10 +9,11 @@ import Loading from "../assets/loading.svg";
 import Check from "../assets/check.svg";
 import More from "../assets/more.svg";
 import Bookmark from "../assets/bookmark.svg";
+import {lookup} from "../lib/YoudaoDict";
 
 init()
 
-const curWord = ref({word: "aa", exp: ""})
+const curWord = ref({word: "test", exp: ""})
 
 
 
@@ -25,6 +26,9 @@ onMounted(()=>{
                 rangeCache = range
                 adjustCardPosition(range)
                 curWord.value.word = range.toString().toLowerCase()
+                lookup(curWord.value.word).then((cb) => {
+                    curWord.value.exp = cb.exp
+                })
             }
 
             clearTimerHideRef()
