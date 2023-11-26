@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import {init} from "./highlight";
+import {getRangeAtPoint, init} from "./highlight";
 import {ShadowRoot, ShadowStyle} from "vue-shadow-dom";
-import {ref} from "vue";
+import {onMounted, ref} from "vue";
 
 import Heart from "../assets/heart.svg";
 import Hearted from "../assets/hearted.svg";
@@ -13,6 +13,91 @@ import Bookmark from "../assets/bookmark.svg";
 init()
 
 const curWord = ref({word: "aa", exp: ""})
+
+
+
+onMounted(()=>{
+    let rangeCache: Range | null = null
+    document.addEventListener('mousemove', (e) => {
+        const range = getRangeAtPoint(e)
+        if (range) {
+            if (rangeCache != range) {
+                rangeCache = range
+                adjustCardPosition(range)
+                curWord.value.word = range.toString().toLowerCase()
+            }
+
+            clearTimerHideRef()
+            timerShowRef = window.setTimeout(() => {
+                openCard()
+            }, 200)
+        } else {
+            timerShowRef && clearTimeout(timerShowRef)
+            isCardVisible() && hidePopupDelay(500)
+        }
+
+    })
+
+    document.addEventListener('keypress', (e) => {
+        if (isCardVisible() && e.key === 'a') {
+            console.log("A pressed")
+        }
+    })
+
+})
+function getCardNode() {
+    const root = document.querySelector('#shadow-root')?.shadowRoot
+    return root?.querySelector('div') as HTMLElement
+}
+
+const isCardVisible = () => {
+    return getCardNode().classList.contains('card_visible')
+}
+
+function adjustCardPosition(r: Range) {
+    const cardNode = getCardNode();
+
+    const {x: x, y: y, width: m_width, height: m_height} = r.getBoundingClientRect();
+    const { x: c_x, y: c_y, width: c_width, height: c_height } = cardNode.getBoundingClientRect();
+
+    const scrollLeft = document.documentElement.scrollLeft;
+    const scrollTop = document.documentElement.scrollTop;
+
+    let left = x + scrollLeft - c_width / 2 + m_width / 2
+    let top = y + scrollTop - c_height
+
+    cardNode.style.left = `${left}px`
+    cardNode.style.top = `${top}px`
+
+}
+
+function openCard() {
+    if (!isCardVisible()) {
+        getCardNode().classList.add('card_visible');
+        // console.log("added")
+    }}
+
+
+let timerHideRef: number
+let timerShowRef: number
+
+function clearTimerHideRef() {
+    timerHideRef && clearTimeout(timerHideRef)
+}
+
+function hidePopupDelay(ms: number) {
+    clearTimerHideRef()
+    timerHideRef = window.setTimeout(() => {
+        const cardNode = getCardNode()
+        cardNode.classList.remove('card_visible')
+        cardNode.inert = true
+        // setDictHistory([])
+    }, ms)
+}
+
+
+
+
 </script>
 
 <template>
@@ -88,6 +173,7 @@ const curWord = ref({word: "aa", exp: ""})
             }
 
             .l3t-card {
+            opacity: 0;
             z-index: 2147483647;
             position: absolute;
             width: 260px;
@@ -100,6 +186,10 @@ const curWord = ref({word: "aa", exp: ""})
             height: auto;
             box-sizing: border-box;
             box-shadow: 0 8px 28px rgba(0, 0, 0, .16)
+            }
+
+            .card_visible {
+            opacity: 1 !important;
             }
 
             .l3t-card-header {
