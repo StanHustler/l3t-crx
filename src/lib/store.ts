@@ -22,4 +22,16 @@ export class Store {
     static clear = async () => {
         await chrome.storage.local.clear()
     }
+
+    static exportData = async () => {
+        const downloadAsJsonFile = (content: string, filename: string) => {
+            const a = document.createElement('a')
+            a.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(content)
+            a.download = filename
+            a.click()
+        }
+
+        const data = await chrome.storage.local.get(['known'])
+        downloadAsJsonFile(JSON.stringify(data), 'L3t_'+Date.now()+'.json')
+    }
 }

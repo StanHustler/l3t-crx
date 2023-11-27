@@ -25,6 +25,7 @@ const set = () => {
 <template>
     <button @click="clear">clear</button>
     <button @click="set">set</button>
+    <button @click="Store.exportData">export</button>
     way: {{way}}
 </template>
 
