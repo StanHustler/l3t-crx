@@ -1,6 +1,14 @@
-import {Messages} from "../constant";
+import {Messages, StoreWay} from "../constant";
 
 console.log('background is running')
+
+chrome.runtime.onInstalled.addListener(() => {
+    const setting = {
+        storeWay: StoreWay.Chrome,
+    }
+    chrome.storage.local.set(setting).then(r => console.log('installed'))
+
+})
 
 chrome.runtime.onMessage.addListener((request) => {
   if (request.type === 'COUNT') {

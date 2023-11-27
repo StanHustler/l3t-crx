@@ -85,3 +85,19 @@ export const enum Messages {
     SetKnown,
     FetchHtml = 'fetch_html',
 }
+
+export enum StoreWay {
+    Chrome,
+    L3t
+}
+
+export enum Language {
+    English,
+}
+
+export type knownWord = {
+    language: Language,
+    timestamp: number,
+}
+
+export type knownWords = Record<string, knownWord>
