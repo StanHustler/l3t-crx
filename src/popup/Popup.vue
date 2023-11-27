@@ -5,7 +5,7 @@ import {Store} from "../lib/store";
 const way = ref()
 
 onMounted(() => {
-    Store.getAllKnown().then(res=>way.value = res)
+    Store.getAllKnown().then(res=>way.value = Object.keys(res))
 })
 
 const clear = () => {

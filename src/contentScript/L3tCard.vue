@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {getRangeAtPoint, init} from "./highlight";
+import {contextHL, getRangeAtPoint, init, unknownHL} from "./highlight";
 import {ShadowRoot, ShadowStyle} from "vue-shadow-dom";
 import {onMounted, ref, watch} from "vue";
 
@@ -10,6 +10,7 @@ import Check from "../assets/check.svg";
 import More from "../assets/more.svg";
 import Bookmark from "../assets/bookmark.svg";
 import {lookup} from "../lib/YoudaoDict";
+import {Store} from "../lib/store";
 
 init()
 
@@ -26,9 +27,9 @@ onMounted(()=>{
                 rangeCache = range
                 adjustCardPosition(range)
                 curWord.value.word = range.toString().toLowerCase()
-                lookup(curWord.value.word).then((cb) => {
-                    curWord.value.exp = cb.exp
-                })
+                // lookup(curWord.value.word).then((cb) => {
+                //     curWord.value.exp = cb.exp
+                // })
             }
 
             clearTimerHideRef()
@@ -44,6 +45,13 @@ onMounted(()=>{
 
     document.addEventListener('keypress', (e) => {
         if (isCardVisible() && e.key === 'a') {
+            Store.setKnown(curWord.value.word)
+            ;[unknownHL, contextHL].forEach(hl => {
+                hl.forEach(range => {
+                    const rangeWord = range.toString().toLowerCase()
+                    if (rangeWord === curWord.value.word) hl.delete(range)
+                })
+            })
             console.log("A pressed")
         }
     })

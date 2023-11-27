@@ -1,15 +1,7 @@
 import {invalidTags, Words} from "../constant";
+import {Store} from "../lib/store";
 
-let words : Words = {
-    "amazing": {
-        "status": 0,
-        "update_time": 1699107431,
-    },
-    "build": {
-        "status": 1 ,
-        "update_time": 1699107431,
-    },
-}
+let words : Words
 
 export const unknownHL = new Highlight()
 export const contextHL = new Highlight()
@@ -55,13 +47,14 @@ function highlightTextNode(node: CharacterData) {
 
     for (const segment of segments) {
         const w = segment.segment.toLowerCase()
-        if (segment.isWordLike && (w in words)) {
-
+        if (segment.isWordLike) {
+            // known word
+            if (words[w]?.status) continue
             const range = new Range()
             range.setStart(curNode, segment.index - preEnd)
             range.setEnd(curNode, segment.index - preEnd + w.length)
 
-            if (words[w].status === 0) {
+            if (words[w] && !words[w].status) {
                 contextHL.add(range)
             } else {
                 unknownHL.add(range)
@@ -97,8 +90,9 @@ export function getRangeAtPoint(e: MouseEvent) {
 }
 
 
-export function init() {
 
+export async function init() {
+    words = await Store.getAllKnown()
     highlight(document.body)
 
 }

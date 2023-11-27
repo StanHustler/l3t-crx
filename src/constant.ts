@@ -74,12 +74,6 @@ declare global {
     }
 }
 
-export type Word = {
-    status : number,
-    update_time : number,
-}
-export type Words = Record<string, Word>
-
 
 export const enum Messages {
     SetKnown,
@@ -91,13 +85,15 @@ export enum StoreWay {
     L3t
 }
 
+
 export enum Language {
     English,
 }
 
-export type knownWord = {
+export type Word = {
     language: Language,
+    status: boolean,
     timestamp: number,
 }
 
-export type knownWords = Record<string, knownWord>
+export type Words = Record<string, Word>
