@@ -47,9 +47,9 @@ function highlightTextNode(node: CharacterData) {
 
     for (const segment of segments) {
         const w = segment.segment.toLowerCase()
-        if (segment.isWordLike && enRegex.test(w)) {
+        if (segment.isWordLike) {
             // known word
-            if (words[w]?.status) continue
+            if (words[w]?.status && !enRegex.test(w)) continue
             const range = new Range()
             range.setStart(curNode, segment.index - preEnd)
             range.setEnd(curNode, segment.index - preEnd + w.length)

@@ -1,4 +1,4 @@
-export const enRegex = /^[a-z]+$/i
+export const enRegex = /^[a-zA-Z]+$/
 
 export type WordContext = {
     url: string
