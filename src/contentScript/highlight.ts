@@ -3,10 +3,10 @@ import {Store} from "../lib/store";
 
 let words : Words
 
+export const unreadHL = new Highlight()
 export const unknownHL = new Highlight()
-export const contextHL = new Highlight()
-CSS.highlights.set('wh-unknown', unknownHL)
-CSS.highlights.set('wh-context', contextHL)
+CSS.highlights.set('l3t-unread', unreadHL)
+CSS.highlights.set('l3t-unknown', unknownHL)
 
 function highlight(node: Node) {
 
@@ -55,9 +55,9 @@ function highlightTextNode(node: CharacterData) {
             range.setEnd(curNode, segment.index - preEnd + w.length)
 
             if (words[w] && !words[w].status) {
-                contextHL.add(range)
-            } else {
                 unknownHL.add(range)
+            } else {
+                unreadHL.add(range)
             }
 
         }
@@ -71,7 +71,7 @@ export function getRangeAtPoint(e: MouseEvent) {
     const element = e.target as HTMLElement
     if (element !== lastMouseOverElement) {
         lastMouseOverElement = element
-        rangesWithRectAtMouseOverCache = [...unknownHL, ...contextHL]
+        rangesWithRectAtMouseOverCache = [...unreadHL, ...unknownHL]
             .map(range => {
                 if (element === range.commonAncestorContainer?.parentElement) {
                     const rect = range.getBoundingClientRect()
@@ -89,10 +89,17 @@ export function getRangeAtPoint(e: MouseEvent) {
     return rangeAtPoint?.range ?? null
 }
 
-
+export function unHighlightWord(w: string) {
+    ;[unreadHL, unknownHL].forEach(hl => {
+        hl.forEach(range => {
+            const rangeWord = range.toString().toLowerCase()
+            if (rangeWord === w) hl.delete(range)
+        })
+    })
+}
 
 export async function init() {
-    words = await Store.getAllKnown()
+    words = await Store.getAllWords()
     highlight(document.body)
 
 }

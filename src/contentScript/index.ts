@@ -17,10 +17,10 @@ app.mount(root)
 
 function genMarkStyle() {
     return `
-        ::highlight(wh-unknown){
+        ::highlight(l3t-unread){
             color: #ff0000;
         }
-        ::highlight(wh-context){
+        ::highlight(l3t-unknown){
             color: #16982b;
         }
         `

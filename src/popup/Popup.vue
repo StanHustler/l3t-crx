@@ -5,18 +5,18 @@ import {Store} from "../lib/store";
 const way = ref()
 
 onMounted(() => {
-    Store.getAllKnown().then(res=>way.value = Object.keys(res))
+    Store.getAllWords().then(res=>way.value = Object.keys(res))
 })
 
 const clear = () => {
     Store.clear().then(() => {
-        Store.getAllKnown().then(res=>way.value = res)
+        Store.getAllWords().then(res=>way.value = res)
     })
 }
 
 const set = () => {
   Store.setKnown('test').then(()=>{
-      Store.getAllKnown().then(res=>way.value = res)
+      Store.getAllWords().then(res=>way.value = res)
   })
 
 }

@@ -11,16 +11,15 @@ export class Store {
         await chrome.storage.local.set({'words': JSON.stringify(words)})
     }
 
-    static getAllKnown = async () => {
+    static getAllWords = async () => {
         const data = await chrome.storage.local.get(['words'])
-        if (data.words) {
-            return JSON.parse(data.words)
-        }
+        if (data.words) return JSON.parse(data.words)
         return {}
     }
 
     static clear = async () => {
-        await chrome.storage.local.clear()
+        // await chrome.storage.local.clear()
+        await chrome.storage.local.remove(['words'])
     }
 
     static exportData = async () => {

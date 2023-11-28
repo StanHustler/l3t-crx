@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {contextHL, getRangeAtPoint, init, unknownHL} from "./highlight";
+import {unknownHL, getRangeAtPoint, init, unHighlightWord, unreadHL} from "./highlight";
 import {ShadowRoot, ShadowStyle} from "vue-shadow-dom";
 import {onMounted, ref, watch} from "vue";
 
@@ -44,15 +44,14 @@ onMounted(()=>{
     })
 
     document.addEventListener('keypress', (e) => {
-        if (isCardVisible() && e.key === 'a') {
-            Store.setKnown(curWord.value.word)
-            ;[unknownHL, contextHL].forEach(hl => {
-                hl.forEach(range => {
-                    const rangeWord = range.toString().toLowerCase()
-                    if (rangeWord === curWord.value.word) hl.delete(range)
-                })
-            })
-            console.log("A pressed")
+        if (!isCardVisible()) return
+        switch (e.key) {
+            case 'a':
+                Store.setKnown(curWord.value.word)
+                unHighlightWord(curWord.value.word)
+                break
+            case 's':
+                break
         }
     })
 
