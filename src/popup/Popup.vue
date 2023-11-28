@@ -15,7 +15,7 @@ const clear = () => {
 }
 
 const set = () => {
-  Store.setKnown('test').then(()=>{
+  Store.setWord('test', true).then(()=>{
       Store.getAllWords().then(res=>way.value = res)
   })
 

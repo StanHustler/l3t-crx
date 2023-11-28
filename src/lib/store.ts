@@ -2,11 +2,15 @@ import {Language, Words} from "../constant";
 
 
 export class Store {
-    static setKnown = async (w: string) => {
+    /**
+     * set a word to known/unknown status
+     * @param w word
+     * @param s status
+     */
+    static setWord = async (w: string,s: boolean) => {
         const data = await chrome.storage.local.get(['words'])
         const words: Words = data.words ? JSON.parse(data.words) : {}
-        if (words[w]) return
-        words[w] = {status: true, language: Language.English, timestamp: Date.now()/1000|0}
+        words[w] = {status: s, language: Language.English, timestamp: Date.now()/1000|0}
         console.log(words)
         await chrome.storage.local.set({'words': JSON.stringify(words)})
     }
@@ -30,7 +34,7 @@ export class Store {
             a.click()
         }
 
-        const data = await chrome.storage.local.get(['known'])
+        const data = await chrome.storage.local.get(['words'])
         downloadAsJsonFile(JSON.stringify(data), 'L3t_'+Date.now()+'.json')
     }
 }

@@ -89,12 +89,22 @@ export function getRangeAtPoint(e: MouseEvent) {
     return rangeAtPoint?.range ?? null
 }
 
-export function unHighlightWord(w: string) {
+export function unreadHL2known(w: string) {
     ;[unreadHL, unknownHL].forEach(hl => {
         hl.forEach(range => {
             const rangeWord = range.toString().toLowerCase()
             if (rangeWord === w) hl.delete(range)
         })
+    })
+}
+
+export function unreadHL2unknown(w: string) {
+    unreadHL.forEach(range =>{
+        const rangeWord = range.toString().toLowerCase()
+        if (rangeWord === w) {
+            unknownHL.add(range)
+            unreadHL.delete(range)
+        }
     })
 }
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {unknownHL, getRangeAtPoint, init, unHighlightWord, unreadHL} from "./highlight";
+import {unknownHL, getRangeAtPoint, init, unreadHL2known, unreadHL, unreadHL2unknown} from "./highlight";
 import {ShadowRoot, ShadowStyle} from "vue-shadow-dom";
 import {onMounted, ref, watch} from "vue";
 
@@ -47,10 +47,12 @@ onMounted(()=>{
         if (!isCardVisible()) return
         switch (e.key) {
             case 'a':
-                Store.setKnown(curWord.value.word)
-                unHighlightWord(curWord.value.word)
+                Store.setWord(curWord.value.word, true)
+                unreadHL2known(curWord.value.word)
                 break
             case 's':
+                Store.setWord(curWord.value.word, false)
+                unreadHL2unknown(curWord.value.word)
                 break
         }
     })
