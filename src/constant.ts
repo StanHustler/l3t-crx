@@ -1,24 +1,4 @@
-export const Levels = [
-    ['p', 'Primary School'],
-    ['m', 'Middle School'],
-    ['h', 'High School'],
-    ['4', 'CET-4'],
-    ['6', 'CET-6'],
-    ['g', 'GRE 8000'],
-    ['o', '∞']
-]
-
-export type LevelKey = (typeof Levels)[number][0]
-
-export type WordInfo = {
-    o: string
-    l: LevelKey
-    t: string
-}
-
-export type WordInfoMap = Record<string, WordInfo>
-
-export type WordMap = Record<string, LevelKey>
+export const enRegex = /^[a-z]+$/i
 
 export type WordContext = {
     url: string

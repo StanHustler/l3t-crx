@@ -1,4 +1,4 @@
-import {invalidTags, Words} from "../constant";
+import {enRegex, invalidTags, Words} from "../constant";
 import {Store} from "../lib/store";
 
 let words : Words
@@ -47,7 +47,7 @@ function highlightTextNode(node: CharacterData) {
 
     for (const segment of segments) {
         const w = segment.segment.toLowerCase()
-        if (segment.isWordLike) {
+        if (segment.isWordLike && enRegex.test(w)) {
             // known word
             if (words[w]?.status) continue
             const range = new Range()
