@@ -12,13 +12,11 @@ import Bookmark from "../assets/bookmark.svg";
 import {lookup} from "../lib/YoudaoDict";
 import {Store} from "../lib/store";
 
-init()
 
 const curWord = ref({word: "test", exp: ""})
 
-
-
 onMounted(()=>{
+
     let rangeCache: Range | null = null
     document.addEventListener('mousemove', (e) => {
         const range = getRangeAtPoint(e)
@@ -266,6 +264,18 @@ function hidePopupDelay(ms: number) {
             justify-content: center;
             align-items: center;
             padding: 10px 0;
+            }
+
+            @media (prefers-color-scheme: dark) {
+            .l3t-card {
+            background: rgb(34,34,34);
+            }
+            .l3t-card-footer {
+            background: rgb(31,31,31);
+            }
+            div {
+            color: white;
+            }
             }
 
         </shadow-style>
