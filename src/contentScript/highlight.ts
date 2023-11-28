@@ -49,7 +49,7 @@ function highlightTextNode(node: CharacterData) {
         const w = segment.segment.toLowerCase()
         if (segment.isWordLike) {
             // known word
-            if (words[w]?.status && !enRegex.test(w)) continue
+            if (words[w]?.status || !enRegex.test(w)) continue
             const range = new Range()
             range.setStart(curNode, segment.index - preEnd)
             range.setEnd(curNode, segment.index - preEnd + w.length)
@@ -113,3 +113,7 @@ export async function init() {
     highlight(document.body)
 
 }
+
+setTimeout(function() {
+    init()
+}, 1000); // 等待2秒钟后执行
