@@ -58,6 +58,7 @@ declare global {
 export const enum Messages {
     SetKnown,
     FetchHtml = 'fetch_html',
+    FetchAPI = 'fetch_api',
 }
 
 export enum StoreWay {

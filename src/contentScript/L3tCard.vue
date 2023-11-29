@@ -9,9 +9,8 @@ import Loading from "../assets/loading.svg";
 import Check from "../assets/check.svg";
 import More from "../assets/more.svg";
 import Bookmark from "../assets/bookmark.svg";
-import {lookup} from "../lib/YoudaoDict";
+import {lookup, lookupPara} from "../lib/YoudaoDict";
 import {Store} from "../lib/store";
-
 
 const curWord = ref({word: "test", exp: ""})
 
@@ -61,8 +60,14 @@ onMounted(()=>{
                 console.log(domCache.textContent)
                 const transNode = document.createElement('div')
                 transNode.className = 'l3t-trans-node'
-                transNode.textContent = "aaa"
+                transNode.textContent = "loading"
                 domCache.append(transNode)
+                lookupPara().then((cb) => {
+                    console.log("cb ==>")
+                    console.log(cb)
+                })
+
+
 
 
         }

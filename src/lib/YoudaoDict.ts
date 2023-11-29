@@ -1,5 +1,6 @@
 import {Messages} from "../constant";
 import {sendMessage} from "./port";
+import CryptoJS from "crypto-js";
 
 type DictResult = {
     word: string
@@ -42,4 +43,38 @@ export async function lookup(word: string) {
 export async function fetchText(url: string): Promise<string> {
     const result = await sendMessage(Messages.FetchHtml, { url })
     return result ?? ''
+}
+
+export async function fetchAPI(url: string): Promise<string> {
+
+
+    const salt = (new Date).getTime();
+    const curtime = Math.round(new Date().getTime()/1000);
+    const query = 'Hello, welcome to use Youdao Zhiyun text translation API interface service again';
+    const str1 = appKey + truncate(query) + salt + curtime + key;
+    const sign = CryptoJS.SHA256(str1).toString(CryptoJS.enc.Hex);
+    function truncate(q: string){
+        const len = q.length;
+        if(len<=20) return q;
+        return q.substring(0, 10) + len + q.substring(len-10, len);
+    }
+
+    const data = {
+        q: query,
+        from: 'en',
+        to: 'zh-CHS',
+        appKey: appKey,
+        salt: salt,
+        sign: sign,
+        signType: 'v3',
+        curtime: curtime,
+    }
+
+
+    const result = await sendMessage(Messages.FetchAPI, { url,data })
+    return result ?? ''
+}
+
+export async function lookupPara() {
+    return await fetchAPI('https://openapi.youdao.com/api')
 }
