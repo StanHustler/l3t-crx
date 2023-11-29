@@ -1,6 +1,9 @@
 import {Language, Words} from "../constant";
 
-
+enum StorageKey {
+    'words' = 'words',
+    'setting' = 'setting'
+}
 export class Store {
     /**
      * set a word to known/unknown status

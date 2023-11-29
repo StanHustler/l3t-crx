@@ -18,6 +18,8 @@ const curWord = ref({word: "test", exp: ""})
 onMounted(()=>{
 
     let rangeCache: Range | null = null
+    let domCache: HTMLElement
+
     document.addEventListener('mousemove', (e) => {
         const range = getRangeAtPoint(e)
         if (range) {
@@ -39,19 +41,30 @@ onMounted(()=>{
             isCardVisible() && hidePopupDelay(500)
         }
 
+        domCache = e.target as HTMLElement
+
     })
 
     document.addEventListener('keypress', (e) => {
-        if (!isCardVisible()) return
         switch (e.key) {
             case 'a':
+                if (!isCardVisible()) return
                 Store.setWord(curWord.value.word, true)
                 unreadHL2known(curWord.value.word)
                 break
             case 's':
+                if (!isCardVisible()) return
                 Store.setWord(curWord.value.word, false)
                 unreadHL2unknown(curWord.value.word)
                 break
+            case 'z':
+                console.log(domCache.textContent)
+                const transNode = document.createElement('div')
+                transNode.className = 'l3t-trans-node'
+                transNode.textContent = "aaa"
+                domCache.append(transNode)
+
+
         }
     })
 
@@ -284,5 +297,9 @@ function hidePopupDelay(ms: number) {
 
 </template>
 
-<style scoped>
+<style>
+.l3t-trans-node {
+    color: gray;
+    font-size: smaller;
+}
 </style>
