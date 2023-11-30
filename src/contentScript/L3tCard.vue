@@ -57,14 +57,13 @@ onMounted(()=>{
                 unreadHL2unknown(curWord.value.word)
                 break
             case 'z':
-                console.log(domCache.textContent)
+                if (!domCache.textContent) return;
                 const transNode = document.createElement('div')
                 transNode.className = 'l3t-trans-node'
                 transNode.textContent = "loading"
                 domCache.append(transNode)
-                lookupPara().then((cb) => {
-                    console.log("cb ==>")
-                    console.log(cb)
+                lookupPara(domCache.textContent as string).then((cb) => {
+                    transNode.textContent = cb.translation[0]
                 })
 
 

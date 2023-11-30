@@ -45,12 +45,13 @@ export async function fetchText(url: string): Promise<string> {
     return result ?? ''
 }
 
-export async function fetchAPI(url: string): Promise<string> {
+
+export async function lookupPara(query:string) {
+    const url = 'https://openapi.youdao.com/api'
 
 
     const salt = (new Date).getTime();
     const curtime = Math.round(new Date().getTime()/1000);
-    const query = 'Hello, welcome to use Youdao Zhiyun text translation API interface service again';
     const str1 = appKey + truncate(query) + salt + curtime + key;
     const sign = CryptoJS.SHA256(str1).toString(CryptoJS.enc.Hex);
     function truncate(q: string){
@@ -70,11 +71,6 @@ export async function fetchAPI(url: string): Promise<string> {
         curtime: curtime,
     }
 
-
-    const result = await sendMessage(Messages.FetchAPI, { url,data })
+    const result = await sendMessage(Messages.FetchAPI, { url ,data })
     return result ?? ''
-}
-
-export async function lookupPara() {
-    return await fetchAPI('https://openapi.youdao.com/api')
 }

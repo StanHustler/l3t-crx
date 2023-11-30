@@ -45,7 +45,7 @@ chrome.runtime.onConnect.addListener(async (port) => {
                     formData.append("signType", "v3");
                     formData.append("curtime", data.curtime);
 
-                    const res = await fetch("https://openapi.youdao.com/api", {
+                    const res = await fetch(url, {
                         method: 'POST',
                         body: formData,
                         redirect: 'follow'
