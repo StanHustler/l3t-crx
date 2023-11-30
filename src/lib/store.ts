@@ -37,7 +37,20 @@ export class Store {
             a.click()
         }
 
-        const data = await chrome.storage.local.get(['words'])
+        const data = await chrome.storage.local.get(['words','setting'])
         downloadAsJsonFile(JSON.stringify(data), 'L3t_'+Date.now()+'.json')
+    }
+
+    static getSetting = async (key :string) => {
+        const data = await chrome.storage.local.get(['setting'])
+        const settings = data.setting ? JSON.parse(data.setting) : {}
+        return settings[key]
+    }
+
+    static setSetting = async (key:string, setting: any) => {
+        const data = await chrome.storage.local.get(['setting'])
+        const settings = data.setting ? JSON.parse(data.setting) : {}
+        settings[key] = setting
+        await chrome.storage.local.set({'setting': JSON.stringify(settings)})
     }
 }

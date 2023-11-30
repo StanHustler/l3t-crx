@@ -1,6 +1,7 @@
 import {Messages} from "../constant";
 import {sendMessage} from "./port";
 import CryptoJS from "crypto-js";
+import {Store} from "./store";
 
 type DictResult = {
     word: string
@@ -49,6 +50,12 @@ export async function fetchText(url: string): Promise<string> {
 export async function lookupPara(query:string) {
     const url = 'https://openapi.youdao.com/api'
 
+    const YouDaoSetting = await Store.getSetting('YouDao')
+    const appKey = YouDaoSetting.appKey;
+    const key = YouDaoSetting.key;
+    if (!appKey || !key) {
+        return 'setting error'
+    }
 
     const salt = (new Date).getTime();
     const curtime = Math.round(new Date().getTime()/1000);

@@ -36,20 +36,16 @@ chrome.runtime.onConnect.addListener(async (port) => {
                     console.log(msg)
 
                     const formData = new FormData();
-                    formData.append("q", data.q);
-                    formData.append("from", data.from);
-                    formData.append("to", data.to);
-                    formData.append("appKey", data.appKey);
-                    formData.append("salt", data.salt);
-                    formData.append("sign", data.sign);
-                    formData.append("signType", "v3");
-                    formData.append("curtime", data.curtime);
+                    for (const key in data) {
+                        formData.append(key, data[key])
+                    }
 
                     const res = await fetch(url, {
                         method: 'POST',
                         body: formData,
                         redirect: 'follow'
                     })
+                    console.log(res)
                     port.postMessage({result: await res.json(), uuid})
                     break
                 }
