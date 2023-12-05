@@ -14,45 +14,55 @@ import {Store} from "../lib/store";
 
 const curWord = ref({word: "test", exp: ""})
 
-onMounted(()=>{
 
+onMounted(()=>{
     let rangeCache: Range | null = null
     let domCache: HTMLElement
+    // document.addEventListener('mousemove', (e) => {
+    //     const range = getRangeAtPoint(e)
+    //     if (range) {
+    //         if (rangeCache != range) {
+    //             rangeCache = range
+    //             adjustCardPosition(range)
+    //             curWord.value.word = range.toString().toLowerCase()
+    //             lookup(curWord.value.word).then((cb) => {
+    //                 curWord.value.exp = cb.exp
+    //             })
+    //         }
+    //
+    //         clearTimerHideRef()
+    //         timerShowRef = window.setTimeout(() => {
+    //             openCard()
+    //         }, 200)
+    //     } else {
+    //         timerShowRef && clearTimeout(timerShowRef)
+    //         isCardVisible() && hidePopupDelay(500)
+    //     }
+    //
+    //     domCache = e.target as HTMLElement
+    //
+    // })
 
-    document.addEventListener('mousemove', (e) => {
+    document.addEventListener('mousemove', (e)=>{
         const range = getRangeAtPoint(e)
         if (range) {
-            if (rangeCache != range) {
-                rangeCache = range
-                adjustCardPosition(range)
-                curWord.value.word = range.toString().toLowerCase()
-                // lookup(curWord.value.word).then((cb) => {
-                //     curWord.value.exp = cb.exp
-                // })
-            }
-
-            clearTimerHideRef()
-            timerShowRef = window.setTimeout(() => {
-                openCard()
-            }, 200)
-        } else {
-            timerShowRef && clearTimeout(timerShowRef)
-            isCardVisible() && hidePopupDelay(500)
+            rangeCache = range
+            adjustCardPosition(range)
+            curWord.value.word = range.toString().toLowerCase()
         }
-
         domCache = e.target as HTMLElement
-
     })
 
     document.addEventListener('keypress', (e) => {
         switch (e.key) {
             case 'a':
-                if (!isCardVisible()) return
                 Store.setWord(curWord.value.word, true)
                 unreadHL2known(curWord.value.word)
+
+                timerShowRef && clearTimeout(timerShowRef)
+                isCardVisible() && hidePopupDelay(0)
                 break
             case 's':
-                if (!isCardVisible()) return
                 Store.setWord(curWord.value.word, false)
                 unreadHL2unknown(curWord.value.word)
                 break
@@ -65,10 +75,19 @@ onMounted(()=>{
                 lookupPara(domCache.textContent as string).then((cb) => {
                     transNode.textContent = cb.translation[0]
                 })
+                break
+            case 'q':
+                openCard()
+                lookup(curWord.value.word).then((cb) => {
+                    curWord.value.exp = cb.exp
+                })
+                break
+        }
+    })
 
-
-
-
+    document.addEventListener('keyup', (e)=>{
+        if (e.key === 'q') {
+            hidePopupDelay(0)
         }
     })
 
