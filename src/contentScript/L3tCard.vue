@@ -58,6 +58,7 @@ onMounted(()=>{
             case 'a':
                 Store.setWord(curWord.value.word, true)
                 unreadHL2known(curWord.value.word)
+                Store.delSentence(curWord.value.word)
 
                 timerShowRef && clearTimeout(timerShowRef)
                 isCardVisible() && hidePopupDelay(0)
@@ -65,6 +66,13 @@ onMounted(()=>{
             case 's':
                 Store.setWord(curWord.value.word, false)
                 unreadHL2unknown(curWord.value.word)
+
+                let para = domCache.textContent as string
+                para.split('.').forEach((s) => {
+                    if (s.toLowerCase().indexOf(curWord.value.word) != -1) {
+                        Store.setSentence(curWord.value.word, s)
+                    }
+                })
                 break
             case 'z':
                 if (!domCache.textContent) return;

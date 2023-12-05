@@ -37,7 +37,7 @@ export class Store {
             a.click()
         }
 
-        const data = await chrome.storage.local.get(['words','setting'])
+        const data = await chrome.storage.local.get(['words','sentences','setting'])
         downloadAsJsonFile(JSON.stringify(data), 'L3t_'+Date.now()+'.json')
     }
 
@@ -52,5 +52,35 @@ export class Store {
         const settings = data.setting ? JSON.parse(data.setting) : {}
         settings[key] = setting
         await chrome.storage.local.set({'setting': JSON.stringify(settings)})
+    }
+
+    static setSentence = async (w: string, s: string) => {
+        const getFaviconUrl = () => {
+            const favicon = document.querySelector('link[rel*="icon"]') as HTMLLinkElement
+            const iconUrl = favicon?.href ?? ''
+            if (iconUrl.startsWith('data:image')) return ''
+            return iconUrl
+        }
+
+        const d = {
+            url: location.href,
+            title: document.title.substring(0, 40),
+            text: s,
+            timestamp: Date.now()/1000|0,
+            favicon: getFaviconUrl()
+        }
+
+        const data = await chrome.storage.local.get(['sentences'])
+        const sentences = data.sentences ? JSON.parse(data.sentences) : {}
+        sentences[w] = sentences[w] || []
+        sentences[w].push(d)
+        await chrome.storage.local.set({'sentences': JSON.stringify(sentences)})
+    }
+
+    static delSentence = async (w: string) => {
+        const data = await chrome.storage.local.get(['sentences'])
+        const sentences = data.sentences ? JSON.parse(data.sentences) : {}
+        delete sentences[w]
+        await chrome.storage.local.set({'sentences': JSON.stringify(sentences)})
     }
 }
