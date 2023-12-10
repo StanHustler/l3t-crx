@@ -108,12 +108,62 @@ export function unreadHL2unknown(w: string) {
     })
 }
 
+function observeDomChange() {
+
+    function isTextNodeValid(textNode: Text) {
+        return !invalidTags.includes(textNode.parentNode?.nodeName?.toUpperCase() ?? '')
+    }
+
+    const observer = new MutationObserver(mutations => {
+        mutations.forEach(mutation => {
+            if (mutation.type === 'childList') {
+                mutation.addedNodes.forEach(node => {
+                    if (!node.isConnected || !node.parentNode?.isConnected) {
+                        return false
+                    }
+                    if (node.nodeType === Node.TEXT_NODE) {
+                        if (isTextNodeValid(node as Text)) {
+                            highlightTextNode(node as Text)
+                        }
+                    } else {
+                        if ((node as HTMLElement).isContentEditable || node.parentElement?.isContentEditable) {
+                            return false
+                        }
+                        highlight(node)
+                    }
+                })
+
+                // when remove node, remove highlight range
+                if (mutations.length > 0) {
+                    ;[unknownHL, unreadHL].forEach(hl => {
+                        hl.forEach(r => {
+                            if (!r.toString()) {
+                                hl.delete(r)
+                            }
+                        })
+                    })
+                }
+            }
+        })
+    })
+
+    observer.observe(document.body, {
+        childList: true,
+        subtree: true,
+        attributes: false
+    })
+}
+
+
+
 export async function init() {
     words = await Store.getAllWords()
     highlight(document.body)
-
+    observeDomChange()
 }
 
-setTimeout(function() {
-    init()
-}, 1000); // 等待2秒钟后执行
+// setTimeout(function() {
+//
+// }, 1000); // 等待2秒钟后执行
+
+init()
