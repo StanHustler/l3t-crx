@@ -1,5 +1,6 @@
 import {enRegex, invalidTags, Words} from "../constant";
 import {Store} from "../lib/store";
+import set = chrome.cookies.set;
 
 let words : Words
 
@@ -160,6 +161,18 @@ export async function init() {
     words = await Store.getAllWords()
     highlight(document.body)
     observeDomChange()
+
+    chrome.runtime.onMessage.addListener((request) => {
+        if (request.type === 'MARK_UNREAD_ALL_KNOWN') {
+            let tmp = new Set<string>()
+            unreadHL.forEach(range => {
+                tmp.add(range.toString().toLowerCase())
+            })
+            tmp.forEach(w => {
+                unreadHL2known(w)
+            })
+        }
+    })
 }
 
 // setTimeout(function() {

@@ -8,6 +8,16 @@ chrome.runtime.onInstalled.addListener(() => {
     }
     chrome.storage.local.set(setting).then(r => console.log('installed'))
 
+    chrome.contextMenus.create({
+        id: 'l3t',
+        title: 'Mark Unread As All known'
+    })
+})
+
+chrome.contextMenus.onClicked.addListener(async (info, tab) => {
+    if (info.menuItemId === 'l3t'&& tab) {
+        await chrome.tabs.sendMessage(tab.id!, {type: 'MARK_UNREAD_ALL_KNOWN'})
+    }
 })
 
 chrome.runtime.onMessage.addListener((request) => {
