@@ -229,7 +229,7 @@ function hidePopupDelay(ms: number) {
 
             .l3t-card {
             opacity: 0;
-            z-index: 2147483647;
+            z-index: -9999;
             position: absolute;
             width: 260px;
             border-radius: 8px;
@@ -245,6 +245,7 @@ function hidePopupDelay(ms: number) {
 
             .card_visible {
             opacity: 1 !important;
+            z-index: 2147483647 !important;
             }
 
             .l3t-card-header {
