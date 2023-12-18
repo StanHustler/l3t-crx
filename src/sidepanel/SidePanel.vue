@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import {Store} from "../lib/store";
+import {RiPieChartLine} from "@remixicon/vue";
 
 const countSync = ref(0)
 
@@ -32,70 +33,118 @@ const saveSetting = () => {
 </script>
 
 <template>
-  <main>
-    <h3>SidePanel Page</h3>
+    <header>
+        <div class="logo">
+            L3t
+        </div>
+        <div class="btn-data-statistics">
+            <RiPieChartLine size="16px" class="i"/>
+            <a>统计</a>
+        </div>
+    </header>
+    <main>
+        <h3>SidePanel Page</h3>
 
-    <h4>Count from Popup: {{ countSync }}</h4>
+        <h4>Count from Popup: {{ countSync }}</h4>
 
-      appKey <input v-model="YouDaoSetting.appKey">
+        appKey <input v-model="YouDaoSetting.appKey">
         key <input v-model="YouDaoSetting.key">
-      <button @click="saveSetting">保存</button>
+        <button @click="saveSetting">保存</button>
 
-  </main>
+        <div class="dashboard">
+            11
+            <div class="card">
+
+            </div>
+        </div>
+    </main>
+
+    <footer>
+
+    </footer>
+
 </template>
 
-<style>
+<style lang="less">
+body {
+    margin: 0;
+}
 :root {
-  font-family:
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    Roboto,
-    Oxygen,
-    Ubuntu,
-    Cantarell,
-    'Open Sans',
-    'Helvetica Neue',
-    sans-serif;
-
-  color-scheme: light dark;
-  background-color: #242424;
+    --bg-color: yellow;
+    --bg-4: #fafafa;
+    --border-1: rgba(0,0,0,0.08);
+    --anchor-1: #ff7008;
 }
 
 @media (prefers-color-scheme: light) {
-  :root {
-    background-color: #fafafa;
-  }
-
-  a:hover {
-    color: #42b983;
-  }
+    :root {
+        --bg-color: #1e1e1e;
+    }
 }
 
-body {
-  min-width: 20rem;
+header {
+    display: flex;
+    align-items: center;
+    height: 56px;
+    justify-content: space-between;
+    padding: 0 16px;
+    box-shadow: inset 0 -1px 0 var(--border-1);
+
+    .btn-data-statistics {
+        margin-left: auto;
+        margin-right: 24px;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+
+        .i {
+            color: var(--anchor-1);
+            margin-right: 4px;
+        }
+    }
 }
 
 main {
-  text-align: center;
-  padding: 1em;
-  margin: 0 auto;
+    padding: 0 12px 0 16px;
+    height: calc(100vh - 112px);
+    overflow-y: auto;
+    background: var(--bg-4);
+
+    .dashboard {
+        display: flex;
+        padding-top: 16px;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        background-color: var(--bg-color);
+
+        .card {
+            display: flex;
+            align-items: center;
+            position: relative;
+            padding-left: 16px;
+            width: 48%;
+            height: 64px;
+            box-shadow: 0 3px 7px rgba(0, 0, 0, .07);
+            border-radius: 6px;
+            margin-bottom: 12px;
+            box-sizing: border-box;
+            overflow: hidden
+        }
+    }
 }
 
-h3 {
-  color: #42b983;
-  text-transform: uppercase;
-  font-size: 1.5rem;
-  font-weight: 200;
-  line-height: 1.2rem;
-  margin: 2rem auto;
+footer {
+    height: 56px;
+    box-shadow: inset 0 1px 0 var(--border-1);
+    width: 100%;
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    z-index: 99;
+    background: var(--bg-1);
+
+
 }
 
-a {
-  font-size: 0.5rem;
-  margin: 0.5rem;
-  color: #cccccc;
-  text-decoration: none;
-}
+
 </style>

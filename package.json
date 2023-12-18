@@ -21,6 +21,7 @@
     "fmt": "prettier --write '**/*.{vue,ts,json,css,scss,md}'"
   },
   "dependencies": {
+    "@remixicon/vue": "^4.0.1",
     "@types/crypto-js": "^4.2.1",
     "crypto-js": "^4.2.0",
     "vite-svg-loader": "^5.1.0",
@@ -31,6 +32,7 @@
     "@crxjs/vite-plugin": "^2.0.0-beta.19",
     "@types/chrome": "^0.0.246",
     "@vitejs/plugin-vue": "^4.4.0",
+    "less": "^4.2.0",
     "prettier": "^3.0.3",
     "typescript": "^5.2.2",
     "vite": "^4.4.11",
