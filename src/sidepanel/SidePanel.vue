@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import {Store} from "../lib/store";
-import {RiPieChartLine} from "@remixicon/vue";
+import {RiPieChartLine, RiListCheck2, RiSettingsLine} from "@remixicon/vue";
 
 const countSync = ref(0)
 
@@ -60,7 +60,14 @@ const saveSetting = () => {
     </main>
 
     <footer>
-
+        <div class="tabs active">
+            <RiListCheck2 size = "20px" class="i"/>
+            <span>我的</span>
+        </div>
+        <div class="tabs">
+            <RiSettingsLine size = "20px" class="i"/>
+            <span>设置</span>
+        </div>
     </footer>
 
 </template>
@@ -71,6 +78,7 @@ body {
 }
 :root {
     --bg-color: yellow;
+    --bg-2: #fff5d5;
     --bg-4: #fafafa;
     --border-1: rgba(0,0,0,0.08);
     --anchor-1: #ff7008;
@@ -142,7 +150,23 @@ footer {
     bottom: 0;
     z-index: 99;
     background: var(--bg-1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
+    .tabs {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 40px;
+        width: 132px;
+    }
+
+    .tabs.active {
+        background: var(--bg-2);
+        border-radius: 100px;
+        color: var(--anchor-1);
+    }
 
 }
 
