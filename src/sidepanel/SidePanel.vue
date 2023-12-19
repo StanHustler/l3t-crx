@@ -11,6 +11,8 @@ const YouDaoSetting = ref({
     key : ''
 })
 
+const pageIndex = ref(0)
+
 onMounted(async () => {
 
     const setting = await Store.getSetting('YouDao')
@@ -43,7 +45,7 @@ const saveSetting = () => {
             <a>统计</a>
         </div>
     </header>
-    <main>
+    <main v-if="pageIndex===0">
         <h3>SidePanel Page</h3>
 
         <h4>Count from Popup: {{ countSync }}</h4>
@@ -65,15 +67,32 @@ const saveSetting = () => {
             </div>
         </div>
 
-    <AclCard/>
+        <AclCard/>
+    </main>
+    <main v-if="pageIndex===1" style="background-color: white">
+        <div class="section-card">
+            <div class="label">基础设置</div>
+            <div class="item-table">
+                <div class="item">
+                    <div class="left"><div class="name">界面语言</div></div>
+                    <div class="right">
+                        <div class="selector">
+                            <span>中文-简体</span>
+                            <RiArrowRightSLine size="12px"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
     </main>
 
     <footer>
-        <div class="tabs active">
+        <div class="tabs" :class="pageIndex==0?'active':''" @click="pageIndex=0">
             <RiListCheck2 size = "20px" class="i"/>
             <span>我的</span>
         </div>
-        <div class="tabs">
+        <div class="tabs" :class="pageIndex==1?'active':''" @click="pageIndex=1">
             <RiSettingsLine size = "20px" class="i"/>
             <span>设置</span>
         </div>
@@ -93,6 +112,7 @@ body {
     --border-1: rgba(0,0,0,0.08);
     --anchor-1: #ff7008;
     --text-6: rgba(0,0,0,0.6);
+    --text-8: rgba(0,0,0,0.8);
     --text-9: rgba(0,0,0,0.9);
 
     --icon-style-bg: rgba(0,0,0,0.04);
@@ -181,6 +201,62 @@ main {
         }
     }
 
+    .section-card {
+        margin-top: 24px;
+
+        .label {
+            font-size: 14px;
+            color: var(--text-8);
+            font-weight: 500;
+        }
+
+        .item-table {
+            margin-top: 16px;
+            border: 1px solid var(--border-1);
+            border-radius: 6px;
+
+            .item {
+                &:last-child {
+                    border-bottom: none;
+                }
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                min-height: 40px;
+                padding: 0 16px;
+                border-bottom: 1px solid var(--border-1);
+                position: relative;
+
+                .right {
+                    text-align: right;
+                    cursor: pointer;
+
+                    .selector {
+                        display: flex;
+                        align-items: center;
+                    }
+                }
+
+                .name {
+                    font-size: 13px;
+                    color: var(--text-8);
+                    display: block;
+                    max-width: 184px;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    -webkit-user-select: none;
+                    user-select: none;
+                }
+            }
+        }
+
+
+
+
+    }
+
+
 
 }
 
@@ -203,6 +279,7 @@ footer {
         justify-content: center;
         height: 40px;
         width: 132px;
+        cursor: pointer;
     }
 
     .tabs.active {
