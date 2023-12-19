@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue'
 import {Store} from "../lib/store";
 import {RiPieChartLine, RiListCheck2, RiSettingsLine, RiFileList3Fill, RiArrowRightSLine} from "@remixicon/vue";
+import AclCard from "./AclCard.vue";
 
 const countSync = ref(0)
 
@@ -64,9 +65,7 @@ const saveSetting = () => {
             </div>
         </div>
 
-        <div class="acl-card">
-
-        </div>
+    <AclCard/>
     </main>
 
     <footer>
@@ -182,9 +181,7 @@ main {
         }
     }
 
-    .acl-card {
-        margin-top: -14px;
-    }
+
 }
 
 footer {
