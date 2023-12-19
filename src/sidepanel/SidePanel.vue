@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import {Store} from "../lib/store";
-import {RiPieChartLine, RiListCheck2, RiSettingsLine} from "@remixicon/vue";
+import {RiPieChartLine, RiListCheck2, RiSettingsLine, RiFileList3Fill, RiArrowRightSLine} from "@remixicon/vue";
 
 const countSync = ref(0)
 
@@ -52,10 +52,20 @@ const saveSetting = () => {
         <button @click="saveSetting">保存</button>
 
         <div class="dashboard">
-            11
             <div class="card">
-
+                <RiFileList3Fill size="44px" class="i"/>
+                <div class="stats">
+                    <span class="num">4</span>
+                    <span class="des">
+                        <span>例句</span>
+                        <RiArrowRightSLine size="12px"/>
+                    </span>
+                </div>
             </div>
+        </div>
+
+        <div class="acl-card">
+
         </div>
     </main>
 
@@ -78,10 +88,15 @@ body {
 }
 :root {
     --bg-color: yellow;
+    --bg-1: #fff;
     --bg-2: #fff5d5;
     --bg-4: #fafafa;
     --border-1: rgba(0,0,0,0.08);
     --anchor-1: #ff7008;
+    --text-6: rgba(0,0,0,0.6);
+    --text-9: rgba(0,0,0,0.9);
+
+    --icon-style-bg: rgba(0,0,0,0.04);
 }
 
 @media (prefers-color-scheme: light) {
@@ -123,7 +138,6 @@ main {
         padding-top: 16px;
         justify-content: space-between;
         flex-wrap: wrap;
-        background-color: var(--bg-color);
 
         .card {
             display: flex;
@@ -132,12 +146,44 @@ main {
             padding-left: 16px;
             width: 48%;
             height: 64px;
+            background: var(--bg-1);
             box-shadow: 0 3px 7px rgba(0, 0, 0, .07);
             border-radius: 6px;
             margin-bottom: 12px;
             box-sizing: border-box;
-            overflow: hidden
+            overflow: hidden;
+
+            .i {
+                position: absolute;
+                right: -2px;
+                bottom: -12px;
+                color: var(--icon-style-bg);
+            }
+
+            .stats {
+                display: flex;
+                flex-direction: column;
+
+                .num {
+                    font-size: 20px;
+                    font-weight: 500;
+                    color: var(--text-9);
+                }
+
+                .des {
+                    margin-top: 4px;
+                    display: flex;
+                    align-items: center;
+                    color: var(--text-6);
+                    cursor: pointer;
+                    font-size: 12px;
+                }
+            }
         }
+    }
+
+    .acl-card {
+        margin-top: -14px;
     }
 }
 
