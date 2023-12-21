@@ -12,15 +12,15 @@ export class Store {
      */
     static setWord = async (w: string,s: boolean) => {
         const data = await chrome.storage.local.get(['words'])
-        const words: Words = data.words ? JSON.parse(data.words) : {}
+        const words: Words = data.words ? data.words : {}
         words[w] = {status: s, language: Language.English, timestamp: Date.now()/1000|0}
         console.log(words)
-        await chrome.storage.local.set({'words': JSON.stringify(words)})
+        await chrome.storage.local.set({'words': words})
     }
 
     static getAllWords = async () => {
         const data = await chrome.storage.local.get(['words'])
-        if (data.words) return JSON.parse(data.words)
+        if (data.words) return data.words
         return {}
     }
 
@@ -43,15 +43,15 @@ export class Store {
 
     static getSetting = async (key :string) => {
         const data = await chrome.storage.local.get(['setting'])
-        const settings = data.setting ? JSON.parse(data.setting) : {}
+        const settings = data.setting ? data.setting : {}
         return settings[key]
     }
 
     static setSetting = async (key:string, setting: any) => {
         const data = await chrome.storage.local.get(['setting'])
-        const settings = data.setting ? JSON.parse(data.setting) : {}
+        const settings = data.setting ? data.setting : {}
         settings[key] = setting
-        await chrome.storage.local.set({'setting': JSON.stringify(settings)})
+        await chrome.storage.local.set({'setting': settings})
     }
 
     static setSentence = async (w: string, s: string) => {
@@ -71,16 +71,16 @@ export class Store {
         }
 
         const data = await chrome.storage.local.get(['sentences'])
-        const sentences = data.sentences ? JSON.parse(data.sentences) : {}
+        const sentences = data.sentences ? data.sentences : {}
         sentences[w] = sentences[w] || []
         sentences[w].push(d)
-        await chrome.storage.local.set({'sentences': JSON.stringify(sentences)})
+        await chrome.storage.local.set({'sentences': sentences})
     }
 
     static delSentence = async (w: string) => {
         const data = await chrome.storage.local.get(['sentences'])
-        const sentences = data.sentences ? JSON.parse(data.sentences) : {}
+        const sentences = data.sentences ? data.sentences : {}
         delete sentences[w]
-        await chrome.storage.local.set({'sentences': JSON.stringify(sentences)})
+        await chrome.storage.local.set({'sentences': sentences})
     }
 }
