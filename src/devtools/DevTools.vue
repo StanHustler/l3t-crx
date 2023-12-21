@@ -1,89 +1,107 @@
 <script setup lang="ts">
-import {onMounted, ref} from 'vue'
+import { onMounted, ref } from 'vue'
 
 const link = ref('https://github.com/guocaoyi/create-chrome-ext')
 
-let k:HTMLInputElement,v:HTMLInputElement;
+let kInput: HTMLInputElement
+let value = ref()
 
-onMounted(()=>{
-    v = document.getElementById('v_input') as HTMLInputElement
-    k = document.getElementById('k_input') as HTMLInputElement
+onMounted(() => {
+    kInput = document.getElementById('k_input') as HTMLInputElement
+    getV()
 })
 
-const getV = async () =>{
-    let res =  await chrome.storage.local.get(k.value)
-    v.value = res[k.value]
+const getV = async () => {
+    let res = await chrome.storage.local.get(kInput.value)
+    value.value = res[kInput.value]
 }
 
-const setV = async () =>{
-    await chrome.storage.local.set({[k.value]:JSON.parse(v.value)})
+const setV = async () => {
+    if (!value.value) return
+    await chrome.storage.local.set({ [kInput.value]: JSON.parse(value.value) })
 }
 
 </script>
 
 <template>
-  <main>
-    <h3>DevTools Page</h3>
+    <main>
+        <h3>DevTools Page</h3>
 
-    <input id="k_input" @change="getV" />
-    <textarea id="v_input" />
-      <button @click="setV"> set </button>
-  </main>
+        <select id="k_input" @change="getV">
+            <option>setting</option>
+            <option>words</option>
+            <option>sentences</option>
+        </select>
+        <button @click="setV">set</button>
+        <table>
+            <tr v-for="k in Object.keys(value)" v-if="value">
+                <td>
+                    <span>{{ k }}</span>
+                </td>
+                <td>
+                    <span>{{ value[k] }}</span>
+                </td>
+                <td>
+                    <button @click="delete value[k]"> X </button>
+                </td>
+            </tr>
+        </table>
+    </main>
 </template>
 
 <style>
 :root {
-  font-family:
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    Roboto,
-    Oxygen,
-    Ubuntu,
-    Cantarell,
-    'Open Sans',
-    'Helvetica Neue',
-    sans-serif;
+    font-family:
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        'Segoe UI',
+        Roboto,
+        Oxygen,
+        Ubuntu,
+        Cantarell,
+        'Open Sans',
+        'Helvetica Neue',
+        sans-serif;
 
-  color-scheme: light dark;
-  background-color: #242424;
+    color-scheme: light dark;
+    background-color: #242424;
 }
 
 @media (prefers-color-scheme: light) {
-  :root {
-    background-color: #fafafa;
-  }
+    :root {
+        background-color: #fafafa;
+    }
 
-  a:hover {
-    color: #42b983;
-  }
+    a:hover {
+        color: #42b983;
+    }
 }
 
 body {
-  min-width: 20rem;
+    min-width: 20rem;
 }
 
 main {
-  text-align: center;
-  padding: 1em;
-  margin: 0 auto;
+    text-align: center;
+    padding: 1em;
+    margin: 0 auto;
 }
 
 h3 {
-  color: #42b983;
-  text-transform: uppercase;
-  font-size: 1.5rem;
-  font-weight: 200;
-  line-height: 1.2rem;
-  margin: 2rem auto;
+    color: #42b983;
+    text-transform: uppercase;
+    font-size: 1.5rem;
+    font-weight: 200;
+    line-height: 1.2rem;
+    margin: 2rem auto;
 }
 
 a {
-  font-size: 0.5rem;
-  margin: 0.5rem;
-  color: #cccccc;
-  text-decoration: none;
+    font-size: 0.5rem;
+    margin: 0.5rem;
+    color: #cccccc;
+    text-decoration: none;
 }
 
 textarea {
