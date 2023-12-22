@@ -5,6 +5,7 @@ const link = ref('https://github.com/guocaoyi/create-chrome-ext')
 
 let kInput: HTMLInputElement
 let value = ref()
+let mode = ref(true)
 
 onMounted(() => {
     kInput = document.getElementById('k_input') as HTMLInputElement
@@ -18,7 +19,12 @@ const getV = async () => {
 
 const setV = async () => {
     if (!value.value) return
-    await chrome.storage.local.set({ [kInput.value]: JSON.parse(value.value) })
+    await chrome.storage.local.set({ [kInput.value]: value.value})
+}
+
+const inputChange = () =>{
+    let dom = document.querySelector('textarea') as HTMLTextAreaElement
+    value.value = JSON.parse(dom.value)
 }
 
 </script>
@@ -33,7 +39,8 @@ const setV = async () => {
             <option>sentences</option>
         </select>
         <button @click="setV">set</button>
-        <table>
+        <input type="checkbox" v-model="mode">
+        <table v-if="mode">
             <tr v-for="k in Object.keys(value)" v-if="value">
                 <td>
                     <span>{{ k }}</span>
@@ -46,6 +53,7 @@ const setV = async () => {
                 </td>
             </tr>
         </table>
+        <textarea v-else :value="JSON.stringify(value)" @change="inputChange"></textarea>
     </main>
 </template>
 
